@@ -24,7 +24,6 @@
     box-sizing: content-box;
     height: 30px;
     width: fit-content;
-    background-color: rgb(238, 238, 123);
     margin: 10px;
     font-size: 20px;
     padding: 10px;
@@ -59,6 +58,12 @@
     padding-right: 15px;
     padding-top: 5px;
     padding-bottom: 5px;
+}
+.reg-btn:hover{
+    cursor: pointer;
+}
+.sucess{
+    color: rgb(37, 223, 37);
 }
 @media (max-width: 600px) {
     .reg-bar-form{

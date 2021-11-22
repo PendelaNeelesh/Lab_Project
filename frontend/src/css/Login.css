@@ -19,13 +19,12 @@
     padding: 10px;
 }
 .text-div{
-    position: relative;
-    left: 10px;
+    width: 100%;
+    margin: auto;
     font-size: 30px;
     grid-row-start: 1;
     grid-row-end: 2;
     top: 10px;
-    background-color: rgb(233, 221, 151);
     border-radius: 15px;
     width: fit-content;
     padding-left: 15px;

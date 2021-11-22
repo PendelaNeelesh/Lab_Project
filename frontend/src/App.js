@@ -7,6 +7,7 @@ import About from "./components/About"
 import LenderReg from "./components/LenderReg"
 import BarrowerReg from "./components/BarrowerReg"
 import { UserProvider } from './contextApis/UserdetailsContext'
+import AllBarrowers from "./components/AllBarrowers"
 function App() {
   return (
     <UserProvider>
@@ -19,6 +20,7 @@ function App() {
             <Route exact path='/login'><Login /></Route>
             <Route exact path='/lendreg'>< LenderReg /> </Route>
             <Route exact path='/barreg'>< BarrowerReg /> </Route>
+            <Route exact path='/getbarrowers'><AllBarrowers /></Route>
           </Switch>
         </div>
       </Router>

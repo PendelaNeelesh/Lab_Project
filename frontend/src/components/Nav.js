@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { userContext } from '../contextApis/UserdetailsContext'
 
 const Nav = () => {
-    const [user, setUser, who, setWho] = useContext(userContext)
+    const [user, setUser, who, setWho, newmsg, setNewmsg] = useContext(userContext)
     const clickFunc = () => {
         var elements = document.getElementsByClassName('navbar-links')
         for (let i = 0; i < elements.length; i++) {
@@ -27,7 +27,19 @@ const Nav = () => {
                 </button>
                 <div className="navbar-links">
                     <ul>
-                        {!(user === '' || user === undefined) && <li> <Link to='/profile'> Profile</Link> </li>}
+                        {!(user === '' || user === undefined) && <li> <Link to='/profile' onClick={() => {
+                            const url = 'http://localhost:8000/user/calib'
+                            fetch(url, {
+                                method: 'GET',
+                                headers: {
+                                    'content-type': 'application/json',
+                                    'authtoken': user
+                                }
+                            }).then(res => res.json())
+                                .then(data => {
+                                    setNewmsg(0)
+                                }).catch(err => console.log(err))
+                        }}> Profile{newmsg !== 0 && <span className='msg-calib'>{newmsg}</span>}</Link> </li>}
                         {(who === "Lender") && <li> <Link to='/getbarrowers'> Barrowers</Link> </li>}
                         {(who === 'Barrower') && <li> <Link to='/updatemoney'> Money</Link> </li>}
                         {!(user === '' || user === undefined) && <li id='login' onClick={logoutFunc}> <Link to='/'> Logout</Link> </li>}

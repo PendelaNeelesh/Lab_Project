@@ -21,7 +21,7 @@ const BarrowerReg = () => {
     return (
         <div className='reg-bar-cnt'>
             <div className='reg-bar-form-cnt'>
-                <div className='reg-text-div'>Register</div>
+                <div className='reg-text-div'>Barrower Register</div>
                 <form className='reg-bar-form'>
                     <div className='reg-bar-form-set'>
                         <div id='err-cnt' className='err-sent'></div>
@@ -39,8 +39,6 @@ const BarrowerReg = () => {
                     <div className='reg-bar-form-set'>
                         <input className='reg-input-field' placeholder="Password" type='password' onChange={(e) => {
                             setcnfPass(e.target.value)
-                            if (pass !== cnfpass) document.getElementById('pass-err').innerHTML = ('Password must be same')
-                            else document.getElementById('pass-err').innerHTML = ''
                         }} />
                         <div className='err-sent' id='pass-err'></div></div>
                     <div className='reg-bar-form-set'>
@@ -90,10 +88,56 @@ const BarrowerReg = () => {
                             setPurpose(e.target.value)
                         }} /> </div>
                     <div className='reg-submit-btn'>
-                        <button className='reg-btn'>Submit</button>
+                        <button className='reg-btn' onClick={(e) => {
+                            e.preventDefault();
+                            if (pass !== cnfpass) {
+                                document.getElementById('pass-err').innerHTML = 'pass and cnfpass should be same'
+                                setTimeout(() => {
+                                    document.getElementById('pass-err').innerHTML = ''
+                                }, 5000)
+                            } else {
+                                const url = 'http://localhost:8000/user/barrower'
+                                fetch(url, {
+                                    method: 'POST',
+                                    headers: { 'content-type': 'application/json' },
+                                    body: JSON.stringify({
+                                        'name': name,
+                                        'mail': mail,
+                                        'pass': pass,
+                                        'phone': phone,
+                                        'pincode': pincode,
+                                        'address': address,
+                                        'age': age,
+                                        'sex': sex,
+                                        'pan': pan,
+                                        'aadhar': aadhar,
+                                        'accno': accno,
+                                        'purpose': purpose,
+                                        'money': money
+                                    })
+                                }).then(res => res.json())
+                                    .then(data => {
+                                        if (data.message === 'Created') {
+                                            document.getElementById('sucess').innerHTML = 'Login to Continue, Redirecting...'
+                                            setTimeout(() => {
+                                                history.push('/login')
+                                            }, 5000)
+                                        } else {
+                                            document.getElementById('err-cnt').innerHTML = data.message
+                                            setTimeout(() => {
+                                                document.getElementById('err-cnt').innerHTML = ''
+                                            }, 7000);
+                                        }
+                                    }).catch(err => {
+                                        console.log(err)
+                                        document.getElementById('err-cnt').innerHTML = 'Some thing went wrong, try again'
+                                    })
+                            }
+                        }}>Submit</button>
                     </div>
                 </form>
                 <div className='register-cnt'>
+                    <div id='sucess'></div>
                     <div className='form-message'>Have an account? Login Here</div>
                     <div className='no-acc-btn'><Link to='/login'>Login</Link></div>
                 </div>

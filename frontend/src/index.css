@@ -5,6 +5,8 @@
 #root,.App{
   height: 100%;
   width: 100%;
+  background-color:rgb(243,241,241);
+  margin-top: 63px;
 }
 html {
   margin: 0;
@@ -18,14 +20,27 @@ body {
   height: 100%;
   width: 100%;
 }
-
+.msg-calib{
+  border-radius: 100%;
+  height: 15px;
+  width: 15px;
+  padding: 2.5px;
+  color: white;
+  background-color: red;
+  font-size: 7px;
+  font-weight: bold;
+  text-align: center;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
 .navbar {
-  width: fit-content;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;

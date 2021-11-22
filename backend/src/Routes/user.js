@@ -15,6 +15,7 @@ const router = express.Router();
 
 router.post('/lender', async (req, res) => {
     //Validation
+    console.log(req.body)
     const { error } = lenderRegisterValidation(req.body)
     if (error) return res.json({ "message": error.details[0].message })
     //Check unique
@@ -43,13 +44,13 @@ router.post('/barrower', async (req, res) => {
     //Validation
     const { error } = barrowerRegisterValidation(req.body)
     if (error) {
-        return res.status(404).send(error.details[0].message)
+        return res.json({ "message": error.details[0].message })
     }
 
     //Check unique
     const existUser = await Barrower.findOne({ mail: req.body.mail })
     const existUser1 = await Lender.findOne({ mail: req.body.mail })
-    if (existUser != null || existUser1 != null) return res.status(400).send("User exists")
+    if (existUser != null || existUser1 != null) return res.json({ 'message': 'User Exists' })
 
     //Hash Password
     const salt = await bcrypt.genSalt(10)
@@ -62,9 +63,13 @@ router.post('/barrower', async (req, res) => {
     const user = new Barrower(data)
     try {
         const saveUser = await user.save()
-        res.status(200).send(saveUser)
+        res.json({
+            "message": 'Created'
+        })
     } catch (err) {
-        res.status(400).send(err)
+        res.json({
+            'message': 'Please try after some time'
+        })
     }
 })
 
@@ -82,9 +87,15 @@ router.post('/login', async (req, res) => {
     if (!validPass) return res.json({ "message": "Mail or Password is wrong" })
 
     //Token Generation
+    var ncalib = 0
+    if (user.who === 'Lender') {
+        ncalib = user.messages.length - user.nomessages
+    } else {
+        ncalib = user.messages.length - user.nomessages + user.request.length
+    }
     var token = ''
-    if (user.who == "Lender") token = jwt.sign({ _id: user._id, who: user.who, mail: user.mail, balance: user.balance }, "qwerty1!#%$25f6fu7^*7fudyv8ggvc", { expiresIn: '1h' })
-    if (user.who == "Barrower") token = jwt.sign({ _id: user._id, who: user.who, mail: user.mail, money: user.money }, "qwerty1!#%$25f6fu7^*7fudyv8ggvc", { expiresIn: '1h' })
+    if (user.who == "Lender") token = jwt.sign({ _id: user._id, who: user.who, mail: user.mail, balance: user.balance, ncalib: ncalib }, "qwerty1!#%$25f6fu7^*7fudyv8ggvc", { expiresIn: '1h' })
+    if (user.who == "Barrower") token = jwt.sign({ _id: user._id, who: user.who, mail: user.mail, money: user.money, ncalib: ncalib, balance: user.balance }, "qwerty1!#%$25f6fu7^*7fudyv8ggvc", { expiresIn: '1h' })
     res.json({
         "authtoken": token
     })
@@ -179,5 +190,59 @@ router.get('/wallet', authtoken, async (req, res) => {
             })
         }
     }
+})
+
+router.get('/getcalib', authtoken, async (req, res) => {
+    const barrowerExist = await Barrower.findOne({ mail: req.user.mail })
+    const lenderExist = await Lender.findOne({ mail: req.user.mail })
+    if (!(barrowerExist || lenderExist)) return res.json({ "message": "Mail or Password is wrong" })
+    const user = barrowerExist || lenderExist
+    var ncalib = 0
+    if (user.who === 'Lender') {
+        ncalib = user.messages.length - user.nomessages
+    } else {
+        ncalib = user.messages.length - user.nomessages + user.request.length
+    }
+    return res.json({
+        'ncalib': ncalib
+    })
+
+})
+
+router.get('/calib', authtoken, async (req, res) => {
+    if (req.user.who === 'Lender') {
+        const user = await Lender.findOne({ 'mail': req.user.mail })
+        let nomessages = user.messages.length
+        Lender.updateOne({ 'mail': req.user.mail }, { $set: { 'nomessages': nomessages } })
+            .then(result => {
+                return res.json({
+                    'succ-message': 'success'
+                })
+            }).catch(err => {
+                return res.json({
+                    'messsage': 'Try again'
+                })
+            })
+    } else {
+        const user = await Barrower.findOne({ 'mail': req.user.mail })
+        let nomessages = user.messages.length + user.request.length
+        Barrower.updateOne({ 'mail': req.user.mail }, { $set: { 'nomessages': nomessages } })
+            .then(result => {
+                return res.json({
+                    'succ-message': 'success'
+                })
+            }).catch(err => {
+                return res.json({
+                    'messsage': 'Try again'
+                })
+            })
+    }
+})
+
+router.get('/getbarrowers', authtoken, async (req, res) => {
+    if (req.user.who !== 'Lender') return res.json({ 'data': {} })
+    const data = await Barrower.find()
+    console.log(data)
+    res.json({ "data": data })
 })
 module.exports = router
