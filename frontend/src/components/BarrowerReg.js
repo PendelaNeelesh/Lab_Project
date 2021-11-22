@@ -12,11 +12,10 @@ const BarrowerReg = () => {
     const [sex, setSex] = useState('')
     const [pan, setPan] = useState('')
     const [aadhar, setAadhar] = useState('')
-    const [balance, setBalance] = useState('')
     const [accno, setAccno] = useState('')
     const [money, setMoney] = useState('')
-    const [mail, setmail] = useState('')
-    const [pass, setpass] = useState('')
+    const [mail, setMail] = useState('')
+    const [pass, setPass] = useState('')
     const [purpose, setPurpose] = useState('')
     const [cnfpass, setcnfPass] = useState('')
     return (
@@ -26,23 +25,19 @@ const BarrowerReg = () => {
                 <form className='reg-bar-form'>
                     <div className='reg-bar-form-set'>
                         <div id='err-cnt' className='err-sent'></div>
-                        <label className='reg-label-field'>Name</label>
-                        <input className='reg-input-field' type='text' onChange={(e) => {
+                        <input className='reg-input-field' placeholder='name' type='text' onChange={(e) => {
                             setName(e.target.value)
                         }} /> </div>
                     <div className='reg-bar-form-set'>
-                        <label className='reg-label-field'>Email</label>
-                        <input className='reg-input-field' type='text' onChange={(e) => {
-                            setmail(e.target.value)
+                        <input className='reg-input-field' placeholder='mail' type='text' onChange={(e) => {
+                            setMail(e.target.value)
                         }} /> </div>
                     <div className='reg-bar-form-set'>
-                        <label className='reg-label-field'>Password</label>
-                        <input className='reg-input-field' type='password' onChange={(e) => {
-                            setpass(e.target.value)
+                        <input className='reg-input-field' placeholder='confirm password' type='password' onChange={(e) => {
+                            setPass(e.target.value)
                         }} /> </div>
                     <div className='reg-bar-form-set'>
-                        <label className='reg-label-field'>Password</label>
-                        <input className='reg-input-field' type='password' onChange={(e) => {
+                        <input className='reg-input-field' placeholder="Password" type='password' onChange={(e) => {
                             setcnfPass(e.target.value)
                             if (pass !== cnfpass) document.getElementById('pass-err').innerHTML = ('Password must be same')
                             else document.getElementById('pass-err').innerHTML = ''
@@ -50,58 +45,48 @@ const BarrowerReg = () => {
                         <div className='err-sent' id='pass-err'></div></div>
                     <div className='reg-bar-form-set'>
                         <div id='phone-err' className='err-sent'> </div>
-                        <label className='reg-label-field'>Phone</label>
-                        <input className='reg-input-field' type='text' onChange={(e) => {
+                        <input className='reg-input-field' placeholder='phone' type='text' onChange={(e) => {
                             if (e.target.value.length !== 10) document.getElementById('phone-err').innerHTML = 'inValid Phone number'
                             else document.getElementById('phone-err').innerHTML = ''
                             setPhone(e.target.value)
                         }} /> </div>
                     <div className='reg-bar-form-set'>
-                        <label className='reg-label-field'>Pincode</label>
-                        <input className='reg-input-field' type='text' onChange={(e) => {
+                        <input className='reg-input-field' placeholder='Pincode' type='text' onChange={(e) => {
                             setPincode(e.target.value)
                         }} /> </div>
                     <div className='reg-bar-form-set'>
-                        <label className='reg-label-field'>Address</label>
-                        <input className='reg-input-field' type='text' onChange={(e) => {
+                        <input className='reg-input-field' placeholder='Address' type='text' onChange={(e) => {
                             setAddress(e.target.value)
                         }} /> </div>
                     <div className='reg-bar-form-set'>
                         <div id="age-err" className='err-sent'></div>
-                        <label className='reg-label-field'>Age</label>
-                        <input className='reg-input-field' type='number' onChange={(e) => {
+                        <input className='reg-input-field' placeholder='age' type='number' onChange={(e) => {
                             if (e.target.value < 18) document.getElementById('age-err').innerHTML = "Min Age is 18"
                             else document.getElementById('age-err').innerHTML = ''
                             setAge(e.target.value)
                         }} /> </div>
                     <div className='reg-bar-form-set'>
-                        <label className='reg-label-field'>Sex</label>
-                        <input className='reg-input-field' type='text' onChange={(e) => {
+                        <input className='reg-input-field' placeholder='sex' type='text' onChange={(e) => {
                             setSex(e.target.value)
                         }} /> </div>
                     <div className='reg-bar-form-set'>
-                        <label className='reg-label-field'>Pan</label>
-                        <input className='reg-input-field' type='text' onChange={(e) => {
+                        <input className='reg-input-field' placeholder='pan' type='text' onChange={(e) => {
                             setPan(e.target.value)
                         }} /> </div>
                     <div className='reg-bar-form-set'>
-                        <label className='reg-label-field'>Aadhar</label>
-                        <input className='reg-input-field' type='text' onChange={(e) => {
+                        <input className='reg-input-field' placeholder='Aadhar' type='text' onChange={(e) => {
                             setAadhar(e.target.value)
                         }} /> </div>
                     <div className='reg-bar-form-set'>
-                        <label className='reg-label-field'>AccNo</label>
-                        <input className='reg-input-field' type='text' onChange={(e) => {
+                        <input className='reg-input-field' placeholder='AccNO' type='text' onChange={(e) => {
                             setAccno(e.target.value)
                         }} /> </div>
                     <div className='reg-bar-form-set'>
-                        <label className='reg-label-field'>Money</label>
-                        <input className='reg-input-field' type='number' onChange={(e) => {
+                        <input className='reg-input-field' placeholder='Required Money' type='number' onChange={(e) => {
                             setMoney(e.target.value)
                         }} /> </div>
                     <div className='reg-bar-form-set'>
-                        <label className='reg-label-field'>purpose</label>
-                        <input className='reg-input-field' type='text' onChange={(e) => {
+                        <input className='reg-input-field' placeholder='purpose' type='text' onChange={(e) => {
                             setPurpose(e.target.value)
                         }} /> </div>
                     <div className='reg-submit-btn'>

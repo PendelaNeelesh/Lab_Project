@@ -39,7 +39,27 @@
     color: red;
     font-size: 10px;
 }
-
+.reg-input-field{
+    background-color: rgb(243,241,241);
+    border: none;
+    margin: 5px;
+    padding: 10px;
+}
+/* .reg-submit-btn{
+    grid-column-start: 1;
+    grid-column-end: 3;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+} */
+.reg-btn{
+    background-color: rgb(139, 228, 131);
+    border-radius: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
 @media (max-width: 600px) {
     .reg-bar-form{
         display: grid;
