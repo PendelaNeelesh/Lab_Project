@@ -1,0 +1,8 @@
+.home-container{
+    margin-top: 60px;
+    height: fit-content;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-flow: column;
+}
