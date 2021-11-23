@@ -4,6 +4,7 @@ import { userContext } from '../contextApis/UserdetailsContext'
 
 const Nav = () => {
     const [user, setUser, who, setWho, newmsg, setNewmsg] = useContext(userContext)
+    const [activelink, setActivelink] = useState('')
     const clickFunc = () => {
         var elements = document.getElementsByClassName('navbar-links')
         for (let i = 0; i < elements.length; i++) {
@@ -20,14 +21,17 @@ const Nav = () => {
     return (
         <div>
             <nav className="navbar">
-                <div className="brand-title"><Link to='/'>GM</Link></div>
+                <div className="brand-title"><Link to='/' onClick={() => {
+                    setActivelink('home')
+                }}>GM</Link></div>
                 <button className="toggle-button" onClick={clickFunc}>
                     <span className="bar"></span>
                     <span className="bar"></span>
                 </button>
                 <div className="navbar-links">
                     <ul>
-                        {!(user === '' || user === undefined) && <li> <Link to='/profile' onClick={() => {
+                        {!(user === '' || user === undefined) && <li id={activelink === 'profile' ? 'active-link' : ''}> <Link to='/profile' onClick={() => {
+                            setActivelink('profile')
                             const url = 'http://localhost:8000/user/calib'
                             fetch(url, {
                                 method: 'GET',
@@ -40,11 +44,24 @@ const Nav = () => {
                                     setNewmsg(0)
                                 }).catch(err => console.log(err))
                         }}> Profile{newmsg !== 0 && <span className='msg-calib'>{newmsg}</span>}</Link> </li>}
-                        {(who === "Lender") && <li> <Link to='/getbarrowers'> Barrowers</Link> </li>}
-                        {(who === 'Barrower') && <li> <Link to='/updatemoney'> Money</Link> </li>}
+                        {!(user === '' || user === undefined) && <li id={activelink === 'sendmoney' ? 'active-link' : ''}> <Link to='/sendmoney' onClick={() => {
+                            setActivelink('sendmoney')
+                        }}> Send Money</Link> </li>}
+                        {(who === "Lender") && <li id={activelink === 'getbarrowers' ? 'active-link' : ''}> <Link to='/getbarrowers' onClick={() => {
+                            setActivelink('getbarrowers')
+                        }}> Barrowers</Link> </li>}
+                        {(who === 'Barrower') && <li id={activelink === 'money' ? 'active-link' : ''}> <Link to='/updatemoney' onClick={
+                            () => {
+                                setActivelink('money')
+                            }
+                        }> Money</Link> </li>}
                         {!(user === '' || user === undefined) && <li id='login' onClick={logoutFunc}> <Link to='/'> Logout</Link> </li>}
-                        {(user === '' || user === undefined) && <li > <Link to='/about'> About</Link> </li>}
-                        {(user === '' || user === undefined) && <li id='login'> <Link to='/login'> Login</Link> </li>}
+                        {(user === '' || user === undefined) && <li id={activelink === 'about' ? 'active-link' : ''}> <Link to='/about' onClick={() => {
+                            setActivelink('about')
+                        }}> About</Link> </li>}
+                        {(user === '' || user === undefined) && <li id='login'> <Link to='/login' onClick={() => {
+                            setActivelink('login')
+                        }}> Login</Link> </li>}
                     </ul>
                 </div>
             </nav>

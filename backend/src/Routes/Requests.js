@@ -6,21 +6,26 @@ router.get('/barrower/:barmail&:rate&:span', authenticate, async (req, res) => {
     if (req.user.who == "Barrower") return res.json({ "message": "Invalid Request" })
     const user = await Barrower.findOne({ "mail": req.params.barmail })
     if (user == null) return res.json({ "message": "User dosent exist" })
-    console.log(req.user.balance, user.money)
-    if (req.user.balance > user.money) return res.json({ "message": "No proper balance" })
+    if (req.user.balance < user.money) return res.json({ "message": "No proper balance" })
     let temp = user.request || []
     let messages = [...temp, {
         "from": req.user.mail,
         "rate": req.params.rate,
         "span": req.params.span
     }]
-    console.log(messages)
     const updateUser = await Barrower.updateOne({ "mail": req.params.barmail }, {
         $set: {
             "request": messages
         }
     })
-    console.log(updateUser)
+    const lenuser = await Lender.findOne({ 'mail': req.user.mail })
+    let xyz = [...lenuser.messages, `Request sent to the user with mail ${req.params.barmail}`]
+    console.log(xyz)
+    const abc = await Lender.updateOne({ 'mail': req.user.mail }, {
+        $set: {
+            'messages': xyz
+        }
+    })
     res.json({ "message": "success" })
 })
 

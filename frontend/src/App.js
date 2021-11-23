@@ -8,6 +8,7 @@ import LenderReg from "./components/LenderReg"
 import BarrowerReg from "./components/BarrowerReg"
 import { UserProvider } from './contextApis/UserdetailsContext'
 import AllBarrowers from "./components/AllBarrowers"
+import Sendmoney from "./components/Sendmoney"
 function App() {
   return (
     <UserProvider>
@@ -21,6 +22,7 @@ function App() {
             <Route exact path='/lendreg'>< LenderReg /> </Route>
             <Route exact path='/barreg'>< BarrowerReg /> </Route>
             <Route exact path='/getbarrowers'><AllBarrowers /></Route>
+            <Route exact path='/sendmoney'><Sendmoney /></Route>
           </Switch>
         </div>
       </Router>

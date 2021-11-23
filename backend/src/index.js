@@ -1,8 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser')
-
-const verifyTokens = require("./Routes/verifyTokens")
 const cors = require('cors')
 require('dotenv/config');
 
@@ -17,7 +15,7 @@ const user = require('./Routes/user')
 app.use('/user', user)
 
 const transac = require('./Routes/transac')
-app.use('/transac', verifyTokens, transac)
+app.use('/transac', transac)
 
 const requestRoutes = require('./Routes/Requests')
 app.use('/request', requestRoutes)

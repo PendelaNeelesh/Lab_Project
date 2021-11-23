@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const authenticate = require('./verifyTokens')
+const bcrypt = require('bcryptjs')
 const Lender = require("../Models/Lender")
 const Barrower = require("../Models/Barrower")
 router.post('/sendmoney', authenticate, (req, res) => {
@@ -115,4 +116,86 @@ router.post('/withdraw', authenticate, async (req, res) => {
     }
 })
 
+router.post('/sendmoney', authenticate, async (req, res) => {
+    console.log("here")
+    const u1 = await Lender.findOne({ 'mail': req.user.mail })
+    console.log('u1 complete')
+    const u2 = await Barrower.findOne({ 'mail': req.user.mail })
+    console.log("u2 complete")
+    const u3 = await Lender.findOne({ 'mail': req.body.mail })
+    console.log("u3 complete")
+    const u4 = await Barrower.findOne({ 'mail': req.body.mail })
+    console.log("u4 complete")
+    if (u4 === null && u3 === null) return res.json({ "message": "Req user dosent exist" })
+    if (u1 === null && u2 === null) return res.json({ "message": "User dosent exist" })
+    var to = u3 || u4
+    var from = u1 || u2
+    var amnt = req.body.amount
+    var pass = req.body.pass
+    const validPass = bcrypt.compareSync(pass, from.pass)
+    console.log(`From sendmoney, user ${validPass}`)
+    if (!validPass) return res.json({ "message": "Invalid password" })
+    if (from.balance < amnt) return res.json({ "message": "Insufficent balance" })
+    if (from === u1 && to === u4) {
+        const cut = await Lender.updateOne({ 'mail': req.user.mail }, {
+            $set: {
+                'balance': u1.balance - amnt,
+                'messages': [...u1.messages, `Sent money to ${req.body.mail} on ${new Date()}`]
+            }
+        })
+        const add = await Barrower.updateOne({ 'mail': req.body.mail }, {
+            $set: {
+                'balance': u4.balance + amnt,
+                'messages': [...u4.messages, `Received a total of ${amnt} from ${req.user.mail} on ${new Date()}`]
+            }
+        })
+        console.log('Lender -> Barrower')
+        res.json({ "message": "success" })
+    } if (from === u1 && to === u3) {
+        const cut = await Lender.updateOne({ 'mail': req.user.mail }, {
+            $set: {
+                'balance': u1.balance - amnt,
+                'messages': [...u1.messages, `Sent money to ${req.body.mail} on ${new Date()}`]
+            }
+        })
+        const add = await Lender.updateOne({ 'mail': req.body.mail }, {
+            $set: {
+                'balance': u3.balance + amnt,
+                'messages': [...u3.messages, `Received a total of ${amnt} from ${req.user.mail} on ${new Date()}`]
+            }
+        })
+        console.log('Lender=> Lender')
+        res.json({ "message": "success" })
+    } if (from === u2 && to === u3) {
+        const cut = await Barrower.updateOne({ 'mail': req.user.mail }, {
+            $set: {
+                'balance': u2.balance - amnt,
+                'messages': [...u2.messages, `Sent money to ${req.body.mail} on ${new Date()}`]
+            }
+        })
+        const add = await Lender.updateOne({ 'mail': req.body.mail }, {
+            $set: {
+                'balance': u3.balance + amnt,
+                'messages': [...u3.messages, `Received a total of ${amnt} from ${req.user.mail} on ${new Date()}`]
+            }
+        })
+        console.log('Barrower-> Lender')
+        res.json({ "message": "success" })
+    } if (from === u2 && to === u4) {
+        const cut = await Barrower.updateOne({ 'mail': req.user.mail }, {
+            $set: {
+                'balance': u2.balance - amnt,
+                'messages': [...u2.messages, `Sent money to ${req.body.mail} on ${new Date()}`]
+            }
+        })
+        const add = await Barrower.updateOne({ 'mail': req.body.mail }, {
+            $set: {
+                'balance': u4.balance + amnt,
+                'messages': [...u4.messages, `Received a total of ${amnt} from ${req.user.mail} on ${new Date()}`]
+            }
+        })
+        console.log('Barrower->Barrower')
+        res.json({ "message": "success" })
+    }
+})
 module.exports = router
