@@ -6,6 +6,12 @@ import '../css/barrower.css'
 const AllBarrowers = () => {
     const [barrowers, setBarrowers] = useState([])
     useEffect(() => {
+        document.getElementById('footer').style.display = 'none'
+        return () => {
+            document.getElementById('footer').style.display = 'flex'
+        }
+    }, [])
+    useEffect(() => {
         document.cookie.split(';').forEach(cook => {
             var name = cook.split('=')
             if (name[0] === ' authtoken') {
@@ -33,6 +39,7 @@ const AllBarrowers = () => {
     }, [])
     return (
         <div className='barrowers-cnt'>
+            {barrowers.length === 0 && <h2> Loading.... </h2>}
             {barrowers.length > 0 && barrowers.map((barrower) => {
                 return <OneBarrower key={barrower._id} name={barrower.name} mail={barrower.mail} money={barrower.money} phone={barrower.phone} />
             })}

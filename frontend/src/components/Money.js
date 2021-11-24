@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import { userContext } from "../contextApis/UserdetailsContext"
 import "../css/money.css"
@@ -7,6 +7,12 @@ const Money = () => {
     const history = useHistory();
     const [user] = useContext(userContext)
     const [money, setMoney] = useState(0)
+    useEffect(() => {
+        document.getElementById('footer').style.display = 'none'
+        return () => {
+            document.getElementById('footer').style.display = 'flex'
+        }
+    }, [])
     return (
         <div className='money-cnt'>
             <div className='money-text'>From here you can change the money you requested while registration.</div>

@@ -12,6 +12,8 @@ import Sendmoney from "./components/Sendmoney"
 import Wallet from "./components/Wallet"
 import Success from "./components/Success"
 import Money from "./components/Money"
+import Footer from "./components/Footer"
+import { useLocation } from 'react-router-dom'
 function App() {
   return (
     <UserProvider>
@@ -20,7 +22,6 @@ function App() {
           <Nav />
           <Switch>
             <Route exact path="/"> <Home /> </Route>
-            <Route exact path='/about'><About /></Route>
             <Route exact path='/login'><Login /></Route>
             <Route exact path='/lendreg'>< LenderReg /> </Route>
             <Route exact path='/barreg'>< BarrowerReg /> </Route>
@@ -30,6 +31,7 @@ function App() {
             <Route exact path='/transacsuccess'><Success /></Route>
             <Route exact path='/updatemoney'><Money /></Route>
           </Switch>
+          < Footer />
         </div>
       </Router>
     </UserProvider>

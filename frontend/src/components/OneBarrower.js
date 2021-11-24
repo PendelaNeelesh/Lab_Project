@@ -9,7 +9,7 @@ const OneBarrower = ({ name, phone, mail, money }) => {
     return (
         <div className='barrower-cnt'>
             <div className='name-cnt'>{name}</div>
-            <div className='money-cnt'>{money}</div>
+            <div className='money1-cnt'>{money}</div>
             <div className='mail-cnt' onClick={() => {
                 window.open(`mailto:${mail}`)
             }}>{mail}</div>

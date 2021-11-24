@@ -21,7 +21,7 @@ const BarrowerReg = () => {
     return (
         <div className='reg-bar-cnt'>
             <div className='reg-bar-form-cnt'>
-                <div className='reg-text-div'>Barrower Register</div>
+                <div className='reg-text-div'>Borrower Register</div>
                 <form className='reg-bar-form'>
                     <div className='reg-bar-form-set'>
                         <div id='err-cnt' className='err-sent'></div>

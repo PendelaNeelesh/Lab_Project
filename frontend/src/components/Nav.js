@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { userContext } from '../contextApis/UserdetailsContext'
 
 const Nav = () => {
+    const location = useLocation();
     const [user, setUser, who, setWho, newmsg, setNewmsg] = useContext(userContext)
     const [activelink, setActivelink] = useState('')
     const clickFunc = () => {
@@ -49,16 +50,17 @@ const Nav = () => {
                         }}> Send Money</Link> </li>}
                         {(who === "Lender") && <li id={activelink === 'getbarrowers' ? 'active-link' : ''}> <Link to='/getbarrowers' onClick={() => {
                             setActivelink('getbarrowers')
-                        }}> Barrowers</Link> </li>}
+                        }}> Borrowers</Link> </li>}
                         {(who === 'Barrower') && <li id={activelink === 'money' ? 'active-link' : ''}> <Link to='/updatemoney' onClick={
                             () => {
                                 setActivelink('money')
                             }
                         }> Money</Link> </li>}
+                        {(location.pathname === '/') && <li> <a href='#footer'> Calculator</a></li>}
                         {!(user === '' || user === undefined) && <li id='login' onClick={logoutFunc}> <Link to='/'> Logout</Link> </li>}
-                        {(user === '' || user === undefined) && <li id={activelink === 'about' ? 'active-link' : ''}> <Link to='/about' onClick={() => {
+                        {(user === '' || user === undefined) && (location.pathname === '/') && <li id={activelink === 'about' ? 'active-link' : ''}> <a href='#about-1' onClick={() => {
                             setActivelink('about')
-                        }}> About</Link> </li>}
+                        }}> About</a> </li>}
                         {(user === '' || user === undefined) && <li id='login'> <Link to='/login' onClick={() => {
                             setActivelink('login')
                         }}> Login</Link> </li>}

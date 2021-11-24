@@ -52,10 +52,11 @@ const Calculators = () => {
     }
     return (
         <div className="calculator-container">
+            <h2>Calculators</h2>
             <div className="btn-container">
-                <button className="cal-button" onClick={emiCal}>EMI Calculator</button>
-                <button className="cal-button" onClick={affLoanCal}>Affordable Loan Calculator</button>
-                <button className="cal-button" onClick={intrestCal}>Intrest Calculator</button>
+                <a href='#footer'><button className="cal-button" onClick={emiCal}>EMI Calculator</button> </a>
+                <a href='#footer' ><button className="cal-button" onClick={affLoanCal}>Affordable Loan Calculator</button></a>
+                <a href='#footer' ><button className="cal-button" onClick={intrestCal}>Interest Calculator</button></a>
             </div>
             <CalculatorsEmi />
             <CalculatorsAffLoan />

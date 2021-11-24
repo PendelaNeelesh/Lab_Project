@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
 import { userContext } from '../contextApis/UserdetailsContext'
@@ -9,6 +9,7 @@ const Login = () => {
     const [user, setUser] = useContext(userContext)
     const [mail, setmail] = useState('')
     const [pass, setpass] = useState('')
+
     return (
         <div className='login-cnt'>
             <div className='login-form-cnt'>
@@ -54,7 +55,7 @@ const Login = () => {
                 <div className='register-cnt'>
                     <div className='form-message'>Don't have account? Register Here</div>
                     <div className='no-acc-btn'><Link to='/lendreg'>Lender</Link></div>
-                    <div className='no-acc-btn'><Link to='/barreg'>Barrower</Link></div>
+                    <div className='no-acc-btn'><Link to='/barreg'>Borrower</Link></div>
                 </div>
             </div>
         </div>

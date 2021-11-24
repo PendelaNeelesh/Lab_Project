@@ -21,7 +21,7 @@
     width: fit-content;
     font-weight: bold;
 }
-.money-cnt{
+.money1-cnt{
     grid-column-start: 2;
     grid-column-end:3;
     display: flex;

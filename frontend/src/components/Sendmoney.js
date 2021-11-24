@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { userContext } from '../contextApis/UserdetailsContext'
 import { useHistory } from 'react-router-dom';
 
@@ -11,7 +11,6 @@ const Sendmoney = () => {
     return (
         <div className='login-cnt'>
             <div className='login-form-cnt'>
-                <div className='text-div'>Login</div>
                 <form className='form'>
                     <div id='err-cnt'></div>
                     <div className='form-set'>
