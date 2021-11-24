@@ -119,7 +119,13 @@ router.get('/mymessages', authtoken, async (req, res) => {
             }, { $set: { nomessages: calib } })
             return res.json({
                 "messages": messages,
-                "requests": requests
+                "requests": requests,
+                "mail": user.mail,
+                "name": user.name,
+                "phone": user.phone,
+                "balance": user.balance,
+                "in": user.in,
+                "out": user.out
             })
         } catch (err) {
             return res.status(404).json({
@@ -139,7 +145,13 @@ router.get('/mymessages', authtoken, async (req, res) => {
             }, { $set: { nomessages: calib } })
             return res.json({
                 "messages": messages,
-                "requests": requests
+                "requests": requests,
+                "mail": user.mail,
+                "name": user.name,
+                "phone": user.phone,
+                "balance": user.balance,
+                "in": user.in,
+                "out": user.out
             })
         } catch (err) {
             console.log(err)
@@ -244,5 +256,16 @@ router.get('/getbarrowers', authtoken, async (req, res) => {
     const data = await Barrower.find()
     console.log(data)
     res.json({ "data": data })
+})
+router.post('/increasemymoney', authtoken, async (req, res) => {
+    if (req.user.who === "Lender") return res.json({ "message": "Invalid Request" })
+    const user = await Barrower.findOne({ 'mail': req.user.mail })
+    const update = await Barrower.updateOne({ 'mail': req.user.mail }, {
+        $set: {
+            'money': req.body.money,
+            'messages': [...user.messages, `Updated the request Amount to ${req.body.money}`]
+        }
+    })
+    return res.json({ "message": "Updated" })
 })
 module.exports = router

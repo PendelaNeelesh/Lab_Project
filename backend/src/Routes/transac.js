@@ -29,7 +29,7 @@ router.post('/reqmoney', authenticate, async (req, res) => {
                 $set: {
                     "in": inmessage,
                     "messages": message,
-                    "balance": balance + req.body.amount
+                    "balance": Number(balance) + Number(req.body.amount)
                 }
             })
             return res.json({
@@ -42,9 +42,33 @@ router.post('/reqmoney', authenticate, async (req, res) => {
             })
         }
     } else {
-        return res.json({
-            "message": "Barrower is not allowed"
-        })
+        try {
+            const user = await Barrower.findOne({ "mail": req.user.mail })
+            const inmessage = [...user.in]
+            const balance = user.balance
+            const message = user.messages
+            message.push(`Added ${req.body.amount} to your account`)
+            inmessage.push({
+                "from": "Admin",
+                "Amount": `${req.body.amount}`,
+                "on": new Date()
+            })
+            const userUpdate = await Barrower.updateOne({ "_id": req.user._id }, {
+                $set: {
+                    "in": inmessage,
+                    "messages": message,
+                    "balance": Number(balance) + Number(req.body.amount)
+                }
+            })
+            return res.json({
+                "message": "Amount added"
+            })
+        } catch (err) {
+            console.log(err)
+            return res.json({
+                "message": "Please try again"
+            })
+        }
     }
 })
 
@@ -68,7 +92,7 @@ router.post('/withdraw', authenticate, async (req, res) => {
                     "on": new Date()
                 }]
                 const message = [...user.messages, `You withdrew ${req.body.amount} on ${new Date()}`]
-                const balance = user.balance - req.body.amount
+                const balance = Number(user.balance) - Number(req.body.amount)
                 const updateUser = await Lender.updateOne({ "_id": req.user._id }, {
                     $set: {
                         "out": out,
@@ -101,7 +125,7 @@ router.post('/withdraw', authenticate, async (req, res) => {
                 "on": new Date()
             }]
             const message = [...user.messages, `You withdrew ${req.body.amount} on ${new Date()}`]
-            const balance = user.balance - req.body.amount
+            const balance = Number(user.balance) - Number(req.body.amount)
             const updateUser = await Barrower.updateOne({ "_id": req.user._id }, {
                 $set: {
                     "out": out,
@@ -116,7 +140,7 @@ router.post('/withdraw', authenticate, async (req, res) => {
     }
 })
 
-router.post('/sendmoney', authenticate, async (req, res) => {
+router.post('/exchange', authenticate, async (req, res) => {
     console.log("here")
     const u1 = await Lender.findOne({ 'mail': req.user.mail })
     console.log('u1 complete')
@@ -136,66 +160,106 @@ router.post('/sendmoney', authenticate, async (req, res) => {
     console.log(`From sendmoney, user ${validPass}`)
     if (!validPass) return res.json({ "message": "Invalid password" })
     if (from.balance < amnt) return res.json({ "message": "Insufficent balance" })
-    if (from === u1 && to === u4) {
+    if (from.who === 'Lender' && to.who !== 'Lender') {
         const cut = await Lender.updateOne({ 'mail': req.user.mail }, {
             $set: {
-                'balance': u1.balance - amnt,
-                'messages': [...u1.messages, `Sent money to ${req.body.mail} on ${new Date()}`]
+                'balance': Number(u1.balance) - Number(amnt),
+                'messages': [...u1.messages, `Sent money to ${req.body.mail} on ${new Date()}`],
+                'out': [...u1.out, {
+                    "to": req.body.mail,
+                    "amount": amnt,
+                    "on": new Date()
+                }]
             }
         })
         const add = await Barrower.updateOne({ 'mail': req.body.mail }, {
             $set: {
-                'balance': u4.balance + amnt,
-                'messages': [...u4.messages, `Received a total of ${amnt} from ${req.user.mail} on ${new Date()}`]
+                'balance': Number(u4.balance) + Number(amnt),
+                'messages': [...u4.messages, `Received a total of ${amnt} from ${req.user.mail} on ${new Date()}`],
+                'in': [...u4.in, {
+                    "from": req.user.mail,
+                    "Amount": amnt,
+                    "on": new Date()
+                }]
             }
         })
         console.log('Lender -> Barrower')
-        res.json({ "message": "success" })
-    } if (from === u1 && to === u3) {
+        return res.json({ "message": "success" })
+    } if (from.who === 'Lender' && to.who === 'Lender') {
         const cut = await Lender.updateOne({ 'mail': req.user.mail }, {
             $set: {
                 'balance': u1.balance - amnt,
-                'messages': [...u1.messages, `Sent money to ${req.body.mail} on ${new Date()}`]
+                'messages': [...u1.messages, `Sent money to ${req.body.mail} on ${new Date()}`],
+                'out': [...u1.out, {
+                    "to": req.body.mail,
+                    "amount": amnt,
+                    "on": new Date()
+                }]
             }
         })
         const add = await Lender.updateOne({ 'mail': req.body.mail }, {
             $set: {
-                'balance': u3.balance + amnt,
-                'messages': [...u3.messages, `Received a total of ${amnt} from ${req.user.mail} on ${new Date()}`]
+                'balance': Number(u3.balance) + Number(amnt),
+                'messages': [...u3.messages, `Received a total of ${amnt} from ${req.user.mail} on ${new Date()}`],
+                'in': [...u3.in, {
+                    "from": req.user.mail,
+                    "Amount": amnt,
+                    "on": new Date()
+                }]
             }
         })
         console.log('Lender=> Lender')
-        res.json({ "message": "success" })
-    } if (from === u2 && to === u3) {
+        return res.json({ "message": "success" })
+    } if (from.who !== 'Lender' && to.who === 'Lender') {
         const cut = await Barrower.updateOne({ 'mail': req.user.mail }, {
             $set: {
                 'balance': u2.balance - amnt,
-                'messages': [...u2.messages, `Sent money to ${req.body.mail} on ${new Date()}`]
+                'messages': [...u2.messages, `Sent money to ${req.body.mail} on ${new Date()}`],
+                'out': [...u2.out, {
+                    "to": req.body.mail,
+                    "amount": amnt,
+                    "on": new Date()
+                }]
             }
         })
         const add = await Lender.updateOne({ 'mail': req.body.mail }, {
             $set: {
-                'balance': u3.balance + amnt,
-                'messages': [...u3.messages, `Received a total of ${amnt} from ${req.user.mail} on ${new Date()}`]
+                'balance': Number(u3.balance) + Number(amnt),
+                'messages': [...u3.messages, `Received a total of ${amnt} from ${req.user.mail} on ${new Date()}`],
+                'in': [...u3.in, {
+                    "from": req.user.mail,
+                    "Amount": amnt,
+                    "on": new Date()
+                }]
             }
         })
         console.log('Barrower-> Lender')
-        res.json({ "message": "success" })
-    } if (from === u2 && to === u4) {
+        return res.json({ "message": "success" })
+    } if (from !== 'Lender' && to !== 'Lender') {
         const cut = await Barrower.updateOne({ 'mail': req.user.mail }, {
             $set: {
                 'balance': u2.balance - amnt,
-                'messages': [...u2.messages, `Sent money to ${req.body.mail} on ${new Date()}`]
+                'messages': [...u2.messages, `Sent money to ${req.body.mail} on ${new Date()}`],
+                'out': [...u2.out, {
+                    "to": req.body.mail,
+                    "amount": amnt,
+                    "on": new Date()
+                }]
             }
         })
         const add = await Barrower.updateOne({ 'mail': req.body.mail }, {
             $set: {
-                'balance': u4.balance + amnt,
-                'messages': [...u4.messages, `Received a total of ${amnt} from ${req.user.mail} on ${new Date()}`]
+                'balance': Number(u4.balance) + Number(amnt),
+                'messages': [...u4.messages, `Received a total of ${amnt} from ${req.user.mail} on ${new Date()}`],
+                'in': [...u4.in, {
+                    "from": req.user.mail,
+                    "Amount": amnt,
+                    "on": new Date()
+                }]
             }
         })
         console.log('Barrower->Barrower')
-        res.json({ "message": "success" })
+        return res.json({ "message": "success" })
     }
 })
 module.exports = router

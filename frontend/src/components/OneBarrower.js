@@ -32,6 +32,7 @@ const OneBarrower = ({ name, phone, mail, money }) => {
                         .then(data => {
                             if (data.message === "success") window.alert("Request sent, wait for the response")
                             else if (data.message === "No proper balance") window.alert('In sufficient balance')
+                            else if (data.message === "Request already sent") window.location.reload()
                             else window.alert('Please log-in again')
                             document.getElementById(`send-req-form-${mail}`).style.display = 'none'
                             document.getElementById(`req-btn-${mail}`).style.display = 'block'

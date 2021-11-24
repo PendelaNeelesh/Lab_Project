@@ -32,7 +32,7 @@ const Sendmoney = () => {
                     <div className='submit-btn'>
                         <button className='login-btn' onClick={(e) => {
                             e.preventDefault();
-                            fetch('http://localhost:8000/transac/sendmoney', {
+                            fetch('http://localhost:8000/transac/exchange', {
                                 method: 'POST',
                                 headers: {
                                     'content-type': 'application/json',
@@ -49,7 +49,7 @@ const Sendmoney = () => {
                                         window.alert('Please Login again')
                                         history.push('/login')
                                     } else {
-                                        console.log(data)
+                                        history.push('/transacSuccess')
                                     }
                                 })
                                 .catch(err => {

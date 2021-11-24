@@ -9,6 +9,9 @@ import BarrowerReg from "./components/BarrowerReg"
 import { UserProvider } from './contextApis/UserdetailsContext'
 import AllBarrowers from "./components/AllBarrowers"
 import Sendmoney from "./components/Sendmoney"
+import Wallet from "./components/Wallet"
+import Success from "./components/Success"
+import Money from "./components/Money"
 function App() {
   return (
     <UserProvider>
@@ -23,6 +26,9 @@ function App() {
             <Route exact path='/barreg'>< BarrowerReg /> </Route>
             <Route exact path='/getbarrowers'><AllBarrowers /></Route>
             <Route exact path='/sendmoney'><Sendmoney /></Route>
+            <Route exact path='/profile'>< Wallet /></Route>
+            <Route exact path='/transacsuccess'><Success /></Route>
+            <Route exact path='/updatemoney'><Money /></Route>
           </Switch>
         </div>
       </Router>
