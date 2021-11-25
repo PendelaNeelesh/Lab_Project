@@ -33,7 +33,7 @@ const Nav = () => {
                     <ul>
                         {!(user === '' || user === undefined) && <li id={activelink === 'profile' ? 'active-link' : ''}> <Link to='/profile' onClick={() => {
                             setActivelink('profile')
-                            const url = 'http://localhost:8000/user/calib'
+                            const url = 'http://13.127.245.83:80/user/calib'
                             fetch(url, {
                                 method: 'GET',
                                 headers: {

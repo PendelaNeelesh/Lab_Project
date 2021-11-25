@@ -23,7 +23,7 @@ const Wallet = () => {
                         window.alert('Login Again')
                     } else {
                         setUse(name[1])
-                        fetch('http://localhost:8000/user/mymessages', {
+                        fetch('http://13.127.245.83:80/user/mymessages', {
                             method: 'GET',
                             headers: {
                                 'content-type': 'application/json',
@@ -75,7 +75,7 @@ const Wallet = () => {
                         <div className='req-frm'>For a period of <b>{request.span}</b> months</div>
                         <div className='req-btn-cnt'>
                             <div className='req-accept-btn' onClick={() => {
-                                fetch(`http://localhost:8000/request/lender/${request.from}&Accept&${request.rate}&${request.span}`, {
+                                fetch(`http://13.127.245.83:80/request/lender/${request.from}&Accept&${request.rate}&${request.span}`, {
                                     method: 'GET',
                                     headers: { 'authtoken': use }
                                 }).then(res => res.json())
@@ -87,7 +87,7 @@ const Wallet = () => {
                                     })
                             }}> Accept </div>
                             <div className='req-reject-btn' onClick={() => {
-                                fetch(`http://localhost:8000/request/lender/${request.from}&Reject&${request.rate}&${request.span}`, {
+                                fetch(`http://13.127.245.83:80/request/lender/${request.from}&Reject&${request.rate}&${request.span}`, {
                                     method: 'GET',
                                     headers: { 'authtoken': use }
                                 }).then(res => res.json())
@@ -123,7 +123,7 @@ const Wallet = () => {
                     <div id='bal-err-sub'></div>
                     <button className='add-sub-btn' onClick={(e) => {
                         e.preventDefault();
-                        fetch(`http://localhost:8000/transac/reqmoney`, {
+                        fetch(`http://13.127.245.83:80/transac/reqmoney`, {
                             method: "POST",
                             headers: {
                                 'content-type': 'application/json',
@@ -143,7 +143,7 @@ const Wallet = () => {
                     }}>Add Amount</button>
                     <button className='add-sub-btn' onClick={(e) => {
                         e.preventDefault();
-                        fetch(`http://localhost:8000/transac/withdraw`, {
+                        fetch(`http://13.127.245.83:80/transac/withdraw`, {
                             method: "POST",
                             headers: {
                                 'content-type': 'application/json',

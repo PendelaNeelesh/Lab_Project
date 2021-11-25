@@ -21,7 +21,7 @@ const Money = () => {
             }} />
             <div className='btn-div'>
                 <button className='update-btn' onClick={() => {
-                    fetch('http://localhost:8000/user/increasemymoney', {
+                    fetch('http://13.127.245.83:80/user/increasemymoney', {
                         method: 'POST',
                         headers: {
                             'content-type': 'application/json',

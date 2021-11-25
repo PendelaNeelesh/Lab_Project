@@ -23,7 +23,7 @@ export const UserProvider = (props) => {
             try {
                 if (isExpired(token)) setUser('')
                 else {
-                    fetch('http://localhost:8000/user/getcalib', {
+                    fetch('http://13.127.245.83:80/user/getcalib', {
                         method: 'GET',
                         headers: {
                             "content-type": 'application/json',
@@ -34,7 +34,7 @@ export const UserProvider = (props) => {
                             setNewmsg(data.ncalib)
                         }).catch(err => window.alert(err))
                     if (decodeToken(token).who === 'Lender') {
-                        fetch('http://localhost:8000/user/getbarrowers', {
+                        fetch('http://13.127.245.83:80/user/getbarrowers', {
                             method: 'GET',
                             headers: {
                                 'content-type': 'application/json',

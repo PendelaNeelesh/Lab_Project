@@ -25,7 +25,7 @@ const OneBarrower = ({ name, phone, mail, money }) => {
                 }} />
                 <button className='reg-btn' className='get-margin' onClick={(e) => {
                     e.preventDefault();
-                    fetch(`http://localhost:8000/request/barrower/${mail}&${rate}&${period}`, {
+                    fetch(`http://13.127.245.83:80/request/barrower/${mail}&${rate}&${period}`, {
                         method: 'GET',
                         headers: { 'authtoken': user }
                     }).then(res => res.json())
