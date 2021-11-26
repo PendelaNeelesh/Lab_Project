@@ -250,7 +250,24 @@ router.get('/calib', authtoken, async (req, res) => {
             })
     }
 })
-
+router.get('/clrmsg', authtoken, async (req, res) => {
+    if (req.user.who === "Lender") {
+        const updateUser = await Lender.updateOne({ 'mail': req.user.mail }, {
+            $set: {
+                'messages': [`You cleared messages on ${new Date()}`]
+            }
+        })
+        return res.json({ "message": "success" })
+    }
+    else {
+        const updateUser = await Barrower.updateOne({ 'mail': req.user.mail }, {
+            $set: {
+                'messages': [`You cleared messages on ${new Date()}`]
+            }
+        })
+        return res.json({ "message": "success" })
+    }
+})
 router.get('/getbarrowers', authtoken, async (req, res) => {
     if (req.user.who !== 'Lender') return res.json({ 'data': {} })
     const data = await Barrower.find()

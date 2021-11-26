@@ -96,7 +96,7 @@ const BarrowerReg = () => {
                                     document.getElementById('pass-err').innerHTML = ''
                                 }, 5000)
                             } else {
-                                const url = 'http://13.127.245.83:80/user/barrower'
+                                const url = 'http://localhost:8000/user/barrower'
                                 fetch(url, {
                                     method: 'POST',
                                     headers: { 'content-type': 'application/json' },

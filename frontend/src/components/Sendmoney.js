@@ -31,7 +31,7 @@ const Sendmoney = () => {
                     <div className='submit-btn'>
                         <button className='login-btn' onClick={(e) => {
                             e.preventDefault();
-                            fetch('http://13.127.245.83:80/transac/exchange', {
+                            fetch('http://localhost:8000/transac/exchange', {
                                 method: 'POST',
                                 headers: {
                                     'content-type': 'application/json',

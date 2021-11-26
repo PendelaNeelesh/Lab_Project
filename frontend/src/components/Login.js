@@ -29,7 +29,7 @@ const Login = () => {
                     <div className='submit-btn'>
                         <button className='login-btn' onClick={(e) => {
                             e.preventDefault();
-                            const url = "http://13.127.245.83:80/user/login"
+                            const url = "http://localhost:8000/user/login"
                             fetch(url, {
                                 method: "POST",
                                 headers: { 'content-type': 'application/json' },

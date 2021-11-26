@@ -18,6 +18,9 @@
 .name-phone{
     width: 100%;
     text-align: left;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
 }
 .wallet-balance{
     width: 100%;
@@ -157,6 +160,12 @@
     align-items: center;
     justify-content: space-around;
 }
+#message-btn{
+    width: 150px;
+    margin: auto;
+    margin-bottom: 10px;
+
+}
 #special{
     width: 100%;
 }
@@ -185,7 +194,8 @@
     }
     .name-phone{
         width: 100%;
-        text-align: center;
+        display: flex;
+        align-items: center;
         margin: 5px;
         padding: 5px;
     }

@@ -71,6 +71,8 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
+    grid-column-start: 1;
+    grid-column-end: 3;
 }
 .get-margin{
     margin: 3px;

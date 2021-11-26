@@ -19,7 +19,7 @@ const AllBarrowers = () => {
                     if (isExpired(name[1])) {
                         window.alert('Login Again')
                     } else {
-                        fetch('http://13.127.245.83:80/user/getbarrowers', {
+                        fetch('http://localhost:8000/user/getbarrowers', {
                             method: 'GET',
                             headers: {
                                 'content-type': 'application/json',
